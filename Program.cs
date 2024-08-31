@@ -10,18 +10,26 @@ namespace Prueba
     {
         static void Main(string[] args)
         {
-            using (Lexico T = new Lexico())
+            try
             {
-                T.SetContenido("Hola");
-                T.SetClasificacion(Token.Tipos.Identificador);
+                using (Lexico T = new Lexico())
+                {
+                    T.setContenido("Hola");
+                    T.setClasificacion(Token.Tipos.Identificador);
 
-                Console.WriteLine(T.GetContenido() + " = " + T.GetClasificacion());
+                    Console.WriteLine(T.getContenido() + " = " + T.getClasificacion());
 
-                T.SetContenido("1345");
-                T.SetClasificacion(Token.Tipos.Numero);
+                    T.setContenido("1345");
+                    T.setClasificacion(Token.Tipos.Numero);
 
-                Console.WriteLine(T.GetContenido() + " = " + T.GetClasificacion());
+                    Console.WriteLine(T.getContenido() + " = " + T.getClasificacion());
+                }
             }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error: " + e.Message);
+            }
+
         }
     }
 }

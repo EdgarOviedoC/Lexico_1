@@ -20,22 +20,22 @@ namespace Lexico_1
             clasificacion = Tipos.Identificador;
         }
 
-        public void SetContenido(String contenido)
+        public void setContenido(String contenido)
         {
             this.contenido = contenido;
         }
 
-        public void SetClasificacion(Tipos clasificacion)
+        public void setClasificacion(Tipos clasificacion)
         {
             this.clasificacion = clasificacion;
         }
 
-        public String GetContenido()
+        public String getContenido()
         {
             return this.contenido;
         }
 
-        public Tipos GetClasificacion()
+        public Tipos getClasificacion()
         {
             return this.clasificacion;
         }
