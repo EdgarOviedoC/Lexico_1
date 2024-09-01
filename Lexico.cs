@@ -15,11 +15,13 @@ namespace Lexico_1
         StreamReader archivo;
         StreamWriter log;
         StreamWriter asm;
-        int linea;
+        StreamWriter error;
 
         public Lexico()
         {
-            linea = 1;
+            error = new StreamWriter("Errores.error");
+            error.AutoFlush = true;
+
             log = new StreamWriter("prueba.log");
             asm = new StreamWriter("prueba.asm");
             log.AutoFlush = true;
@@ -31,23 +33,27 @@ namespace Lexico_1
             }
             else
             {
-                throw new Error("El archivo pueba.cpp no existe", log);
+                throw new Error("El archivo pueba.cpp no existe", error);
             }
         }
 
         public Lexico(string nombreArchivo)
         {
-            log = new StreamWriter(nombreArchivo);
-            asm = new StreamWriter(nombreArchivo);
-            log.AutoFlush = true;
-            asm.AutoFlush = true;
+            error = new StreamWriter("Errores.error");
+            error.AutoFlush = true;
 
-            /*
-                Si nombre = suma.cpp
-                log = suma.log
-                asm = suma.asm
-                y validar la extencion del nombre del archivo 
-            */
+            if (Path.GetExtension(nombreArchivo) == ".cpp" && File.Exists(Path.ChangeExtension(nombreArchivo, ".cpp")))
+            {
+                archivo = new StreamReader(nombreArchivo);
+                log = new StreamWriter(Path.ChangeExtension(nombreArchivo, ".log"));
+                asm = new StreamWriter(Path.ChangeExtension(nombreArchivo, ".asm"));
+                log.AutoFlush = true;
+                asm.AutoFlush = true;
+            }
+            else
+            {
+                throw new Error("El archivo " + nombreArchivo + " No existe o extension invalida", error);
+            }
         }
 
         //Destructor de la clase lexico

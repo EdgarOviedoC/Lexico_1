@@ -12,17 +12,18 @@ namespace Prueba
         {
             try
             {
-                using (Lexico T = new Lexico())
+                using (Lexico T = new Lexico("Suma.cpp"))
                 {
-                    T.setContenido("Hola");
-                    T.setClasificacion(Token.Tipos.Identificador);
+                    //T.setContenido("Hola");
+                    //T.setClasificacion(Token.Tipos.Identificador);
 
-                    Console.WriteLine(T.getContenido() + " = " + T.getClasificacion());
+                    //Console.WriteLine(T.getContenido() + " = " + T.getClasificacion());
 
-                    T.setContenido("1345");
-                    T.setClasificacion(Token.Tipos.Numero);
+                    //T.setContenido("1345");
+                    //T.setClasificacion(Token.Tipos.Numero);
 
-                    Console.WriteLine(T.getContenido() + " = " + T.getClasificacion());
+                    //Console.WriteLine(T.getContenido() + " = " + T.getClasificacion());
+                    T.Dispose();
                 }
             }
             catch (Exception e)
