@@ -15,7 +15,7 @@ namespace Lexico_1
         StreamReader archivo;
         StreamWriter log;
         StreamWriter asm;
-        int line;
+        //int line;
         StreamWriter error;
 
         public Lexico()
@@ -105,6 +105,14 @@ namespace Lexico_1
             else if (c == '}')
             {
                 setClasificacion(Tipos.FinBloque);
+            }
+            else if (c == '?')
+            {
+                setClasificacion(Tipos.OperadorTernario);
+            }
+            else if (c == '+' || c == '-')
+            {
+                setClasificacion(Tipos.OperadorTermino);
             }
             else
             {

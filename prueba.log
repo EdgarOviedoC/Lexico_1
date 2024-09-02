@@ -1,8 +1,12 @@
 { = inicioBloque
++ = OperadorTermino
 X26 = Identificador
 = = Caracter
 200 = Numero
-+ = Caracter
++ = OperadorTermino
 300 = Numero
 ; = FinSentencia
+? = OperadorTernario
+- = OperadorTermino
 } = FinBloque
+￿ = Caracter
