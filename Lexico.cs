@@ -15,6 +15,7 @@ namespace Lexico_1
         StreamReader archivo;
         StreamWriter log;
         StreamWriter asm;
+        int line;
         StreamWriter error;
 
         public Lexico()
@@ -72,13 +73,38 @@ namespace Lexico_1
             while (char.IsWhiteSpace(c = (char)archivo.Read()))
             {
             }
+
+            Buffer += c;
+
             if (char.IsLetter(c))
             {
                 setClasificacion(Tipos.Identificador);
+                while(char.IsLetterOrDigit(c = (char)archivo.Peek()))
+                {
+                    Buffer+=c;
+                    archivo.Read();
+                }
             }
             else if (char.IsDigit(c))
             {
                 setClasificacion(Tipos.Numero);
+                while(char.IsDigit(c = (char)archivo.Peek()))
+                {
+                    Buffer+=c;
+                    archivo.Read();
+                }
+            }
+            else if(c == ';')
+            {
+                setClasificacion(Tipos.FinSentencia);
+            }
+            else if (c == '{')
+            {
+                setClasificacion(Tipos.inicioBloque);
+            }
+            else if (c == '}')
+            {
+                setClasificacion(Tipos.FinBloque);
             }
             else
             {
@@ -86,10 +112,15 @@ namespace Lexico_1
             }
 
             setContenido(Buffer);
-            log.Write(getContenido() + getClasificacion());
+            log.WriteLine(getContenido() + " = " + getClasificacion());
 
             //archivo.read();
             //archivo.peek();
+        }
+
+        public bool finArchivo()
+        {
+            return archivo.EndOfStream;
         }
     }
 }

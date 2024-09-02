@@ -1,0 +1,8 @@
+{ = inicioBloque
+X26 = Identificador
+= = Caracter
+200 = Numero
++ = Caracter
+300 = Numero
+; = FinSentencia
+} = FinBloque
