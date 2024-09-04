@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.002.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lexico_1", "Lexico_1.csproj", "{911FC060-059F-4961-B79E-5AD0BD1AF288}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lexico_1", "Lexico_1.csproj", "{C24CF5E4-FE04-4088-8F73-07CA0FD49365}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{911FC060-059F-4961-B79E-5AD0BD1AF288}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{911FC060-059F-4961-B79E-5AD0BD1AF288}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{911FC060-059F-4961-B79E-5AD0BD1AF288}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{911FC060-059F-4961-B79E-5AD0BD1AF288}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C24CF5E4-FE04-4088-8F73-07CA0FD49365}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C24CF5E4-FE04-4088-8F73-07CA0FD49365}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C24CF5E4-FE04-4088-8F73-07CA0FD49365}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C24CF5E4-FE04-4088-8F73-07CA0FD49365}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

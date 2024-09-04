@@ -1,12 +1,4 @@
-{ = inicioBloque
-+ = OperadorTermino
-X26 = Identificador
-= = Caracter
-200 = Numero
-+ = OperadorTermino
-300 = Numero
-; = FinSentencia
-? = OperadorTernario
-- = OperadorTermino
-} = FinBloque
-￿ = Caracter
+{  =  InicioBloque
+--  =  IncrementoTermino
+->  =  Puntero
+}  =  FinBloque

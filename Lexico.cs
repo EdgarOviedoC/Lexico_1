@@ -7,6 +7,10 @@ using System.IO;
 /*
     1) Sobrecargar el constructor lexico para que reciba como argumento el nombre del archivo a compilar
     2) Tener un contador de lineas 
+    3) Agregar operador relacional  
+        ==, >,>=, <, <=, <>, !
+    4) Agregar Operador logico
+        ||, &&, !
 */
 namespace Lexico_1
 {
@@ -79,28 +83,28 @@ namespace Lexico_1
             if (char.IsLetter(c))
             {
                 setClasificacion(Tipos.Identificador);
-                while(char.IsLetterOrDigit(c = (char)archivo.Peek()))
+                while (char.IsLetterOrDigit(c = (char)archivo.Peek()))
                 {
-                    Buffer+=c;
+                    Buffer += c;
                     archivo.Read();
                 }
             }
             else if (char.IsDigit(c))
             {
                 setClasificacion(Tipos.Numero);
-                while(char.IsDigit(c = (char)archivo.Peek()))
+                while (char.IsDigit(c = (char)archivo.Peek()))
                 {
-                    Buffer+=c;
+                    Buffer += c;
                     archivo.Read();
                 }
             }
-            else if(c == ';')
+            else if (c == ';')
             {
                 setClasificacion(Tipos.FinSentencia);
             }
             else if (c == '{')
             {
-                setClasificacion(Tipos.inicioBloque);
+                setClasificacion(Tipos.InicioBloque);
             }
             else if (c == '}')
             {
@@ -110,18 +114,58 @@ namespace Lexico_1
             {
                 setClasificacion(Tipos.OperadorTernario);
             }
-            else if (c == '+' || c == '-')
+            else if (c == '=')
+            {
+                setClasificacion(Tipos.Asignacion);
+            }
+            else if (c == '+')
             {
                 setClasificacion(Tipos.OperadorTermino);
+
+                if ((c = (char)archivo.Peek()) == '+' || c == '=')
+                {
+                    setClasificacion(Tipos.IncrementoTermino);
+                    Buffer += c;
+                    archivo.Read();
+                }
+            }
+            else if (c == '-')
+            {
+                setClasificacion(Tipos.OperadorTermino);
+
+                if ((c = (char)archivo.Peek()) == '-' || c == '=')
+                {
+                    setClasificacion(Tipos.IncrementoTermino);
+                    Buffer += c;
+                    archivo.Read();
+                }
+                else if (c == '>')
+                {
+                    setClasificacion(Tipos.Puntero);
+                    Buffer += c;
+                    archivo.Read();
+                }
+            }
+            else if (c == '*' || c == '/' || c == '%')
+            {
+                setClasificacion(Tipos.OperadorFactor);
+
+                if ((c = (char)archivo.Peek()) == '=')
+                {
+                    setClasificacion(Tipos.IncrementoFactor);
+                    Buffer += c;
+                    archivo.Read();
+                }
             }
             else
             {
                 setClasificacion(Tipos.Caracter);
             }
-
-            setContenido(Buffer);
-            log.WriteLine(getContenido() + " = " + getClasificacion());
-
+            if (!finArchivo())
+            {
+                setContenido(Buffer);
+                log.WriteLine(getContenido() + "  =  " + getClasificacion());
+            }
             //archivo.read();
             //archivo.peek();
         }
