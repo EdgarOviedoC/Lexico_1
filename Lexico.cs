@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using System.IO;
 
 /*
-    1) Sobrecargar el constructor lexico para que reciba como argumento el nombre del archivo a compilar
+    1) Sobrecargar el constructor lexico para que reciba como argumento el nombre del archivo a  (Listo)
     2) Tener un contador de lineas 
     3) Agregar operador relacional  
-        ==, >,>=, <, <=, <>, !
+        ==, >,>=, <, <=, <>, !=
     4) Agregar Operador logico
         ||, &&, !
 */
@@ -57,7 +57,7 @@ namespace Lexico_1
             }
             else
             {
-                throw new Error("El archivo " + nombreArchivo + " No existe o extension invalida", error);
+                throw new Error("El archivo " + nombreArchivo + " No existe  tiene extension invalida", error);
             }
         }
 
@@ -117,6 +117,68 @@ namespace Lexico_1
             else if (c == '=')
             {
                 setClasificacion(Tipos.Asignacion);
+                
+                if ((c = (char)archivo.Peek()) == '=')
+                {
+                    setClasificacion(Tipos.OperadorRelacional);
+                    Buffer += c;
+                    archivo.Read();
+                }
+            }
+            else if (c == '|')
+            {
+                setClasificacion(Tipos.Caracter);
+
+                if ((c = (char)archivo.Peek()) == '|')
+                {
+                    setClasificacion(Tipos.OperadorLogico);
+                    Buffer += c;
+                    archivo.Read();
+                }
+            }
+            else if (c == '&')
+            {
+                setClasificacion(Tipos.Caracter);
+                
+                if ((c = (char)archivo.Peek()) == '&')
+                {
+                    setClasificacion(Tipos.OperadorLogico);
+                    Buffer += c;
+                    archivo.Read();
+                }
+            }
+            else if (c == '!')
+            {
+                setClasificacion(Tipos.OperadorLogico);
+
+                if ((c = (char)archivo.Peek()) == '=')
+                {
+                    setClasificacion(Tipos.OperadorRelacional);
+                    Buffer += c;
+                    archivo.Read();
+                }
+            }
+            else if (c == '<')
+            {
+                setClasificacion(Tipos.OperadorRelacional);
+                
+                if ((c = (char)archivo.Peek()) == '=' || c == '>')
+                {
+                    setClasificacion(Tipos.OperadorRelacional);
+                    Buffer += c;
+                    archivo.Read();
+                }
+            }
+            else if (c == '>')
+            {
+                setClasificacion(Tipos.OperadorRelacional);
+                
+                if ((c = (char)archivo.Peek()) == '=')
+                {
+                    setClasificacion(Tipos.OperadorRelacional);
+                    Buffer += c;
+                    archivo.Read();
+                }
             }
             else if (c == '+')
             {

@@ -12,7 +12,8 @@ namespace Lexico_1
             Identificador, Numero, Caracter, FinSentencia,
             InicioBloque, FinBloque, OperadorTernario,
             OperadorTermino, OperadorFactor, IncrementoTermino,
-            IncrementoFactor, Puntero, Asignacion
+            IncrementoFactor, Puntero, Asignacion,
+            OperadorRelacional, OperadorLogico
         }
         private String contenido;
         private Tipos clasificacion;
