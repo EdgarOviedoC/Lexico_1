@@ -19,9 +19,10 @@ namespace Lexico_1
         StreamReader archivo;
         StreamWriter log;
         StreamWriter asm;
-        //int line;
+        int line = 0;
         StreamWriter error;
 
+        //Constructor de la clase lexico
         public Lexico()
         {
             error = new StreamWriter("Errores.error");
@@ -42,6 +43,7 @@ namespace Lexico_1
             }
         }
 
+        //Constructor sobrecargado
         public Lexico(string nombreArchivo)
         {
             error = new StreamWriter("Errores.error");
@@ -76,54 +78,89 @@ namespace Lexico_1
 
             while (char.IsWhiteSpace(c = (char)archivo.Read()))
             {
+                ContadorLineas(c);
             }
 
             Buffer += c;
 
             if (char.IsLetter(c))
             {
-                setClasificacion(Tipos.Identificador);
+                setClasificacion(Tipos.Caracter);
+
                 while (char.IsLetterOrDigit(c = (char)archivo.Peek()))
                 {
+                    setClasificacion(Tipos.Identificador);
                     Buffer += c;
                     archivo.Read();
                 }
+
+                ContadorLineas(c);
             }
             else if (char.IsDigit(c))
             {
                 setClasificacion(Tipos.Numero);
+
                 while (char.IsDigit(c = (char)archivo.Peek()))
                 {
                     Buffer += c;
                     archivo.Read();
                 }
+
+                ContadorLineas(c);
             }
             else if (c == ';')
             {
                 setClasificacion(Tipos.FinSentencia);
+
+                ContadorLineas(c);
             }
             else if (c == '{')
             {
                 setClasificacion(Tipos.InicioBloque);
+
+                ContadorLineas(c);
             }
             else if (c == '}')
             {
                 setClasificacion(Tipos.FinBloque);
+
+                ContadorLineas(c);
             }
             else if (c == '?')
             {
                 setClasificacion(Tipos.OperadorTernario);
+
+                ContadorLineas(c);
+            }
+            else if (c == '$')
+            {
+                setClasificacion(Tipos.Caracter);
+
+                if (Char.IsDigit(c = (char)archivo.Peek()))
+                {
+                    setClasificacion(Tipos.Moneda);
+
+                    while (char.IsDigit(c = (char)archivo.Peek()))
+                    {
+                        Buffer += c;
+                        archivo.Read();
+                    }
+                }
+
+                ContadorLineas(c);
             }
             else if (c == '=')
             {
                 setClasificacion(Tipos.Asignacion);
-                
+
                 if ((c = (char)archivo.Peek()) == '=')
                 {
                     setClasificacion(Tipos.OperadorRelacional);
                     Buffer += c;
                     archivo.Read();
                 }
+
+                ContadorLineas(c);
             }
             else if (c == '|')
             {
@@ -135,17 +172,21 @@ namespace Lexico_1
                     Buffer += c;
                     archivo.Read();
                 }
+
+                ContadorLineas(c);
             }
             else if (c == '&')
             {
                 setClasificacion(Tipos.Caracter);
-                
+
                 if ((c = (char)archivo.Peek()) == '&')
                 {
                     setClasificacion(Tipos.OperadorLogico);
                     Buffer += c;
                     archivo.Read();
                 }
+
+                ContadorLineas(c);
             }
             else if (c == '!')
             {
@@ -157,28 +198,34 @@ namespace Lexico_1
                     Buffer += c;
                     archivo.Read();
                 }
+
+                ContadorLineas(c);
             }
             else if (c == '<')
             {
                 setClasificacion(Tipos.OperadorRelacional);
-                
+
                 if ((c = (char)archivo.Peek()) == '=' || c == '>')
                 {
                     setClasificacion(Tipos.OperadorRelacional);
                     Buffer += c;
                     archivo.Read();
                 }
+
+                ContadorLineas(c);
             }
             else if (c == '>')
             {
                 setClasificacion(Tipos.OperadorRelacional);
-                
+
                 if ((c = (char)archivo.Peek()) == '=')
                 {
                     setClasificacion(Tipos.OperadorRelacional);
                     Buffer += c;
                     archivo.Read();
                 }
+
+                ContadorLineas(c);
             }
             else if (c == '+')
             {
@@ -190,6 +237,8 @@ namespace Lexico_1
                     Buffer += c;
                     archivo.Read();
                 }
+
+                ContadorLineas(c);
             }
             else if (c == '-')
             {
@@ -207,6 +256,8 @@ namespace Lexico_1
                     Buffer += c;
                     archivo.Read();
                 }
+
+                ContadorLineas(c);
             }
             else if (c == '*' || c == '/' || c == '%')
             {
@@ -218,23 +269,45 @@ namespace Lexico_1
                     Buffer += c;
                     archivo.Read();
                 }
+
+                ContadorLineas(c);
+            }
+            else if (char.IsWhiteSpace(c))
+            {
+                ContadorLineas(c);
             }
             else
             {
                 setClasificacion(Tipos.Caracter);
+
+                ContadorLineas(c);
             }
+
             if (!finArchivo())
             {
                 setContenido(Buffer);
-                log.WriteLine(getContenido() + "  =  " + getClasificacion());
+                log.WriteLine("{0}  °°°°  {1}", getContenido(), getClasificacion());
+                Console.WriteLine("Escribiendo en log : " + getContenido());
             }
-            //archivo.read();
-            //archivo.peek();
         }
 
         public bool finArchivo()
         {
             return archivo.EndOfStream;
+        }
+
+        public void ContadorLineas(int c)
+        {
+            if (c == 10)
+            {
+                line++;
+            }
+        }
+
+        public void EscribeCantidadLineas()
+        {
+            log.WriteLine("Total de lineas {0}", line);
+            Console.WriteLine("Total de lineas {0}", line);
         }
     }
 }

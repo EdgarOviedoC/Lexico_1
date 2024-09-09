@@ -13,7 +13,8 @@ namespace Lexico_1
             InicioBloque, FinBloque, OperadorTernario,
             OperadorTermino, OperadorFactor, IncrementoTermino,
             IncrementoFactor, Puntero, Asignacion,
-            OperadorRelacional, OperadorLogico
+            OperadorRelacional, OperadorLogico,
+            Moneda
         }
         private String contenido;
         private Tipos clasificacion;

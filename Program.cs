@@ -18,11 +18,14 @@ namespace Prueba
                     {
                         l.nexToken();
                     }
+
+                    l.EscribeCantidadLineas();
                 }
             }
             catch (Exception e)
             {
                 Console.WriteLine("Error: " + e.Message);
+                Console.WriteLine(e.StackTrace);
             }
 
         }
