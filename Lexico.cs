@@ -76,7 +76,7 @@ namespace Lexico_1
             {
                 throw new Error("El archivo tiene extension invalida", log);
             }
-            
+
         }
 
         //Destructor de la clase lexico
@@ -88,7 +88,7 @@ namespace Lexico_1
             archivo.Close();
             asm.Close();
         }
-        
+
         public void nexToken()
         {
             char c;
@@ -122,6 +122,24 @@ namespace Lexico_1
                 {
                     Buffer += c;
                     archivo.Read();
+                }
+
+                if (c == '.')
+                {
+                    Buffer += c;
+                    archivo.Read();
+                    if (!(char.IsDigit(c = (char)archivo.Peek())))
+                    {
+                        throw new Error("Lexic error: Expected \"digit\" ", log, line);
+                    }
+                    else
+                    {
+                        while (char.IsDigit(c = (char)archivo.Peek()))
+                        {
+                            Buffer += c;
+                            archivo.Read();
+                        }
+                    }
                 }
             }
             else if (c == ';')
@@ -260,11 +278,11 @@ namespace Lexico_1
                     archivo.Read();
                 }
             }
-            else if(c == '"')
+            else if (c == '"')
             {
                 setClasificacion(Tipos.Cadena);
-                
-                while(!((c = (char)archivo.Peek()) == '"'))
+
+                while (!((c = (char)archivo.Peek()) == '"'))
                 {
                     Buffer += c;
                     archivo.Read();
@@ -283,12 +301,12 @@ namespace Lexico_1
                 setClasificacion(Tipos.Caracter);
 
                 c = (char)archivo.Read();
-                
+
                 Buffer += c;
 
                 c = (char)archivo.Peek();
 
-                if (c != '\'') 
+                if (c != '\'')
                 {
                     throw new Error("Lexico error: Expected ''' ", log, line);
                 }
