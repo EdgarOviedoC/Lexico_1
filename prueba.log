@@ -1,2 +1,13 @@
-Error: Lexic error: Expected "digit"  on line 1
-Total de lineas 1
+230  °°°°  Numero
+230.30  °°°°  Numero
+230e30  °°°°  Numero
+230e-30  °°°°  Numero
+230e+30  °°°°  Numero
+230.30e30  °°°°  Numero
+230.30e-30  °°°°  Numero
+230.30e+30  °°°°  Numero
+"hola mundo"  °°°°  Cadena
+#  °°°°  Caracter
+#64  °°°°  Caracter
+'@'  °°°°  Caracter
+Total de lineas 12

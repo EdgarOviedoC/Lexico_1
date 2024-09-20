@@ -5,22 +5,25 @@ using System.Threading.Tasks;
 using System.IO;
 
 /* Proyecto
--------------------------- Terminado ---------------------------
+-------------------------- TERMINADO ---------------------------
  1) Agregar token cadena. 
     Ejemplos
      Cadena vacia ""
      Cadena con texto "Hola mundo"
      Cadena si no se cierra las comillas error lexico
 ----------------------------------------------------------------
-----------------------------------------------------------------
+
+------------------------- TERMINADO ----------------------------
  2) Numero. Error lexico si despues del punto no hay numero
 ----------------------------------------------------------------
+
 ----------------------------------------------------------------
  3) Notacion exponencial E-8 ó E+8
     Tambien se puede con el exponenete en numeros decimales
     si despues de la E no viene un + ó - Error lexico
 ----------------------------------------------------------------
----------------------- Terminado -------------------------------
+
+--------------------------TERMINADO-----------------------------
  4)#Digitos es un carecter pero concatenar numeros despues del #
     '@' es un caracter si esta entre comillas
 -----------------------------------------------------------------
@@ -130,11 +133,37 @@ namespace Lexico_1
                     archivo.Read();
                     if (!(char.IsDigit(c = (char)archivo.Peek())))
                     {
-                        throw new Error("Lexic error: Expected \"digit\" ", log, line);
+                        throw new Error("Lexical error: Expected \"digit\" ", log, line);
                     }
                     else
                     {
                         while (char.IsDigit(c = (char)archivo.Peek()))
+                        {
+                            Buffer += c;
+                            archivo.Read();
+                        }
+                    }
+                }
+
+                if (char.ToLower(c) == 'e')
+                {
+                    Buffer += c;
+                    archivo.Read();
+                    c = (char)archivo.Peek();
+                    
+                    if (c == '+' || c == '-')
+                    {
+                        Buffer += c;
+                        archivo.Read();
+                    }
+
+                    if (!(char.IsDigit(c = (char)archivo.Peek())))
+                    {
+                        throw new Error("Lexical error: Expected \"digit\" ", log, line);
+                    }
+                    else
+                    {
+                        while(char.IsDigit(c = (char)archivo.Peek()))
                         {
                             Buffer += c;
                             archivo.Read();
@@ -311,6 +340,16 @@ namespace Lexico_1
                     throw new Error("Lexico error: Expected ''' ", log, line);
                 }
                 else
+                {
+                    Buffer += c;
+                    archivo.Read();
+                }
+            }
+            else if (c == '#')
+            {
+                setClasificacion(Tipos.Caracter);
+
+                while (char.IsDigit(c = (char)archivo.Peek()))
                 {
                     Buffer += c;
                     archivo.Read();
