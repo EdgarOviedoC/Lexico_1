@@ -8,9 +8,14 @@ namespace Lexico_1
 {
     public class Error : Exception
     {
-        public Error(string message, StreamWriter error) : base(message)
+        public Error(string message, StreamWriter log) : base(message)
         {
-            error.WriteLine("Error: " + message);
+            log.WriteLine("Error: " + message);
+        }
+
+        public Error(String message, StreamWriter log, int line) : base (message + "on line " + line)
+        {
+            log.WriteLine("Error: " + message + " on line " + line);
         }
     }
 }

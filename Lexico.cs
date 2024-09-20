@@ -4,13 +4,26 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.IO;
 
-/*
-    1) Sobrecargar el constructor lexico para que reciba como argumento el nombre del archivo a  (Listo)
-    2) Tener un contador de lineas 
-    3) Agregar operador relacional  
-        ==, >,>=, <, <=, <>, !=
-    4) Agregar Operador logico
-        ||, &&, !
+/* Proyecto
+-------------------------- Terminado ---------------------------
+ 1) Agregar token cadena. 
+    Ejemplos
+     Cadena vacia ""
+     Cadena con texto "Hola mundo"
+     Cadena si no se cierra las comillas error lexico
+----------------------------------------------------------------
+----------------------------------------------------------------
+ 2) Numero. Error lexico si despues del punto no hay numero
+----------------------------------------------------------------
+----------------------------------------------------------------
+ 3) Notacion exponencial E-8 ó E+8
+    Tambien se puede con el exponenete en numeros decimales
+    si despues de la E no viene un + ó - Error lexico
+----------------------------------------------------------------
+---------------------- Terminado -------------------------------
+ 4)#Digitos es un carecter pero concatenar numeros despues del #
+    '@' es un caracter si esta entre comillas
+-----------------------------------------------------------------
 */
 namespace Lexico_1
 {
@@ -19,15 +32,11 @@ namespace Lexico_1
         StreamReader archivo;
         StreamWriter log;
         StreamWriter asm;
-        int line = 0;
-        StreamWriter error;
+        int line = 1;
 
         //Constructor de la clase lexico
         public Lexico()
         {
-            error = new StreamWriter("Errores.error");
-            error.AutoFlush = true;
-
             log = new StreamWriter("prueba.log");
             asm = new StreamWriter("prueba.asm");
             log.AutoFlush = true;
@@ -39,49 +48,60 @@ namespace Lexico_1
             }
             else
             {
-                throw new Error("El archivo pueba.cpp no existe", error);
+                throw new Error("El archivo pueba.cpp no existe", log);
             }
         }
 
         //Constructor sobrecargado
         public Lexico(string nombreArchivo)
         {
-            error = new StreamWriter("Errores.error");
-            error.AutoFlush = true;
+            log = new StreamWriter(Path.ChangeExtension(nombreArchivo, ".log"));
+            log.AutoFlush = true;
 
-            if (Path.GetExtension(nombreArchivo) == ".cpp" && File.Exists(Path.ChangeExtension(nombreArchivo, ".cpp")))
+            if (File.Exists(Path.ChangeExtension(nombreArchivo, ".cpp")))
             {
                 archivo = new StreamReader(nombreArchivo);
-                log = new StreamWriter(Path.ChangeExtension(nombreArchivo, ".log"));
+            }
+            else
+            {
+                throw new Error("El archivo " + nombreArchivo + " no existe", log);
+            }
+
+            if (Path.GetExtension(nombreArchivo) == ".cpp")
+            {
                 asm = new StreamWriter(Path.ChangeExtension(nombreArchivo, ".asm"));
-                log.AutoFlush = true;
                 asm.AutoFlush = true;
             }
             else
             {
-                throw new Error("El archivo " + nombreArchivo + " No existe  tiene extension invalida", error);
+                throw new Error("El archivo tiene extension invalida", log);
             }
+            
         }
 
         //Destructor de la clase lexico
         public void Dispose()
         {
-            archivo.Close();
+            log.WriteLine("Total de lineas {0}", line);
+
             log.Close();
+            archivo.Close();
             asm.Close();
         }
-        //
+        
         public void nexToken()
         {
             char c;
             string Buffer = "";
 
-            while (char.IsWhiteSpace(c = (char)archivo.Read()))
+            while (char.IsWhiteSpace(c = (char)archivo.Peek()))
             {
                 ContadorLineas(c);
+                archivo.Read();
             }
 
             Buffer += c;
+            archivo.Read();
 
             if (char.IsLetter(c))
             {
@@ -93,8 +113,6 @@ namespace Lexico_1
                     Buffer += c;
                     archivo.Read();
                 }
-
-                ContadorLineas(c);
             }
             else if (char.IsDigit(c))
             {
@@ -105,32 +123,22 @@ namespace Lexico_1
                     Buffer += c;
                     archivo.Read();
                 }
-
-                ContadorLineas(c);
             }
             else if (c == ';')
             {
                 setClasificacion(Tipos.FinSentencia);
-
-                ContadorLineas(c);
             }
             else if (c == '{')
             {
                 setClasificacion(Tipos.InicioBloque);
-
-                ContadorLineas(c);
             }
             else if (c == '}')
             {
                 setClasificacion(Tipos.FinBloque);
-
-                ContadorLineas(c);
             }
             else if (c == '?')
             {
                 setClasificacion(Tipos.OperadorTernario);
-
-                ContadorLineas(c);
             }
             else if (c == '$')
             {
@@ -146,8 +154,6 @@ namespace Lexico_1
                         archivo.Read();
                     }
                 }
-
-                ContadorLineas(c);
             }
             else if (c == '=')
             {
@@ -159,8 +165,6 @@ namespace Lexico_1
                     Buffer += c;
                     archivo.Read();
                 }
-
-                ContadorLineas(c);
             }
             else if (c == '|')
             {
@@ -172,8 +176,6 @@ namespace Lexico_1
                     Buffer += c;
                     archivo.Read();
                 }
-
-                ContadorLineas(c);
             }
             else if (c == '&')
             {
@@ -185,8 +187,6 @@ namespace Lexico_1
                     Buffer += c;
                     archivo.Read();
                 }
-
-                ContadorLineas(c);
             }
             else if (c == '!')
             {
@@ -198,8 +198,6 @@ namespace Lexico_1
                     Buffer += c;
                     archivo.Read();
                 }
-
-                ContadorLineas(c);
             }
             else if (c == '<')
             {
@@ -211,8 +209,6 @@ namespace Lexico_1
                     Buffer += c;
                     archivo.Read();
                 }
-
-                ContadorLineas(c);
             }
             else if (c == '>')
             {
@@ -224,8 +220,6 @@ namespace Lexico_1
                     Buffer += c;
                     archivo.Read();
                 }
-
-                ContadorLineas(c);
             }
             else if (c == '+')
             {
@@ -237,8 +231,6 @@ namespace Lexico_1
                     Buffer += c;
                     archivo.Read();
                 }
-
-                ContadorLineas(c);
             }
             else if (c == '-')
             {
@@ -256,8 +248,6 @@ namespace Lexico_1
                     Buffer += c;
                     archivo.Read();
                 }
-
-                ContadorLineas(c);
             }
             else if (c == '*' || c == '/' || c == '%')
             {
@@ -269,26 +259,52 @@ namespace Lexico_1
                     Buffer += c;
                     archivo.Read();
                 }
-
-                ContadorLineas(c);
             }
-            else if (char.IsWhiteSpace(c))
+            else if(c == '"')
             {
-                ContadorLineas(c);
+                setClasificacion(Tipos.Cadena);
+                
+                while(!((c = (char)archivo.Peek()) == '"'))
+                {
+                    Buffer += c;
+                    archivo.Read();
+
+                    if (finArchivo())
+                    {
+                        archivo.Read();
+                        throw new Error("Lexico error: Expected \'\"\' ", log, line);
+                    }
+                }
+                Buffer += c;
+                archivo.Read();
+            }
+            else if (c == '\'')
+            {
+                setClasificacion(Tipos.Caracter);
+
+                c = (char)archivo.Read();
+                
+                Buffer += c;
+
+                c = (char)archivo.Peek();
+
+                if (c != '\'') 
+                {
+                    throw new Error("Lexico error: Expected ''' ", log, line);
+                }
+                else
+                {
+                    Buffer += c;
+                    archivo.Read();
+                }
             }
             else
             {
                 setClasificacion(Tipos.Caracter);
-
-                ContadorLineas(c);
             }
 
-            if (!finArchivo())
-            {
-                setContenido(Buffer);
-                log.WriteLine("{0}  °°°°  {1}", getContenido(), getClasificacion());
-                Console.WriteLine("Escribiendo en log : " + getContenido());
-            }
+            setContenido(Buffer);
+            log.WriteLine("{0}  °°°°  {1}", getContenido(), getClasificacion());
         }
 
         public bool finArchivo()
@@ -302,12 +318,6 @@ namespace Lexico_1
             {
                 line++;
             }
-        }
-
-        public void EscribeCantidadLineas()
-        {
-            log.WriteLine("Total de lineas {0}", line);
-            Console.WriteLine("Total de lineas {0}", line);
         }
     }
 }
